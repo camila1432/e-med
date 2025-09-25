@@ -2,11 +2,11 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Patients from './pages/Pacientes';
-import Auxiliaries from './pages/Agendamento';
-import Auxiliaries from './pages/Relatorios';
-import Surgeries from './pages/Cirurgia';
-import Financial from './pages/Financeiro';
+import Pacientes from './pages/Pacientes';
+import Cirurgia from './pages/Cirurgia';
+import Financeiro from './pages/Financeiro';
+import Agendamento from './pages/Agendamento';
+import Relatorios from './pages/Relatorios';
 import Layout from './components/layout'; 
 
 function App() {
@@ -38,34 +38,42 @@ function App() {
         }
       />
       <Route
-        path="/patients"
+        path="/pacientes"
         element={
           <Layout currentPageName="Pacientes">
-            <Patients />
+            <Pacientes />
           </Layout>
         }
       />
       <Route
-        path="/auxiliaries"
-        element={
-          <Layout currentPageName="Auxiliares">
-            <Auxiliaries />
-          </Layout>
-        }
-      />
-      <Route
-        path="/surgeries"
+        path="/cirurgias"
         element={
           <Layout currentPageName="Cirurgias">
-            <Surgeries />
+            <Cirurgia />
           </Layout>
         }
       />
       <Route
-        path="/financial"
+        path="/financeiro"
         element={
           <Layout currentPageName="Financeiro">
-            <Financial />
+            <Financeiro />
+          </Layout>
+        }
+      />
+      <Route
+        path="/agendamento"
+        element={
+          <Layout currentPageName="Agendamento">
+            <Agendamento />
+          </Layout>
+        }
+      />
+      <Route
+        path="/relatorios"
+        element={
+          <Layout currentPageName="Relatórios">
+            <Relatorios />
           </Layout>
         }
       />
