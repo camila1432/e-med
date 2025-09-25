@@ -2,10 +2,11 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Patients from './pages/Patients';
-import Auxiliaries from './pages/Auxiliaries';
-import Surgeries from './pages/Surgeries';
-import Financial from './pages/Financial';
+import Patients from './pages/Pacientes';
+import Auxiliaries from './pages/Agendamento';
+import Auxiliaries from './pages/Relatorios';
+import Surgeries from './pages/Cirurgia';
+import Financial from './pages/Financeiro';
 import Layout from './components/layout'; 
 
 function App() {
