@@ -1,0 +1,129 @@
+{
+  "name": "Surgery",
+  "type": "object",
+  "properties": {
+    "patient_id": {
+      "type": "string",
+      "description": "ID do paciente"
+    },
+    "patient_name": {
+      "type": "string",
+      "description": "Nome do paciente"
+    },
+    "procedure_name": {
+      "type": "string",
+      "description": "Nome do procedimento cirúrgico"
+    },
+    "procedure_code": {
+      "type": "string",
+      "description": "Código do procedimento (TUSS/AMB)"
+    },
+    "hospital": {
+      "type": "string",
+      "description": "Hospital onde será realizada"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Data agendada"
+    },
+    "scheduled_time": {
+      "type": "string",
+      "description": "Horário agendado"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "solicitada",
+        "autorizada",
+        "agendada",
+        "realizada",
+        "faturada",
+        "cancelada"
+      ],
+      "default": "solicitada",
+      "description": "Status da cirurgia"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "eletiva",
+        "urgente",
+        "emergencial"
+      ],
+      "default": "eletiva",
+      "description": "Prioridade do procedimento"
+    },
+    "main_surgeon": {
+      "type": "string",
+      "description": "Cirurgião principal"
+    },
+    "assistant_surgeons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Cirurgiões auxiliares"
+    },
+    "anesthesiologist": {
+      "type": "string",
+      "description": "Anestesista responsável"
+    },
+    "estimated_duration": {
+      "type": "number",
+      "description": "Duração estimada em horas"
+    },
+    "medical_fee": {
+      "type": "number",
+      "description": "Honorário médico"
+    },
+    "assistant_fee": {
+      "type": "number",
+      "description": "Taxa dos auxiliares"
+    },
+    "total_cost": {
+      "type": "number",
+      "description": "Custo total estimado"
+    },
+    "authorization_number": {
+      "type": "string",
+      "description": "Número da autorização do convênio"
+    },
+    "clinical_history": {
+      "type": "string",
+      "description": "História clínica relevante"
+    },
+    "surgical_report": {
+      "type": "string",
+      "description": "Relatório cirúrgico"
+    },
+    "postop_instructions": {
+      "type": "string",
+      "description": "Orientações pós-operatórias"
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs dos documentos anexados"
+    },
+    "complications": {
+      "type": "string",
+      "description": "Complicações observadas"
+    },
+    "actual_start_time": {
+      "type": "string",
+      "description": "Hora real de início"
+    },
+    "actual_end_time": {
+      "type": "string",
+      "description": "Hora real de término"
+    }
+  },
+  "required": [
+    "patient_name",
+    "procedure_name",
+    "hospital"
+  ]
+}
