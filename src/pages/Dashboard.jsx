@@ -4,11 +4,11 @@ import { Financial_Record } from "@/entities/Financial_Record";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import {
-  Activity,
-  Calendar,
-  DollarSign,
-  Clock,
+import { 
+  Activity, 
+  Calendar, 
+  DollarSign, 
+  Clock, 
   Users,
   FileText,
   Plus,
@@ -19,9 +19,9 @@ import StatsCard from "../components/dashboard/StatsCard";
 import RecentSurgeries from "../components/dashboard/RecentSurgeries";
 
 export default function Dashboard() {
-  const [surgeries, setSurgeries] = useState([]); // Removido tipo <Surgery[]>
-  const [financialRecords, setFinancialRecords] = useState([]); // Removido tipo <Financial_Record[]>
-  const [isLoading, setIsLoading] = useState(true); // Removido tipo <boolean>
+  const [surgeries, setSurgeries] = useState([]);
+  const [financialRecords, setFinancialRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     loadData();
@@ -44,21 +44,21 @@ export default function Dashboard() {
 
   const getStats = () => {
     const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-
+    const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    
     const totalSurgeries = surgeries.length;
-    const todaySurgeries = surgeries.filter(s =>
-      s.scheduled_date === todayStr
+    const todaySurgeries = surgeries.filter(s => 
+      s.scheduled_date === today.toISOString().split('T')[0]
     ).length;
-
-    const pendingSurgeries = surgeries.filter(s =>
+    
+    const pendingSurgeries = surgeries.filter(s => 
       ['solicitada', 'autorizada', 'agendada'].includes(s.status)
     ).length;
-
+    
     const totalRevenue = financialRecords
       .filter(r => r.payment_status === 'pago_total')
       .reduce((sum, r) => sum + (r.received_amount || 0), 0);
-
+    
     const pendingPayments = financialRecords
       .filter(r => r.payment_status === 'pendente')
       .reduce((sum, r) => sum + (r.invoice_amount || 0), 0);
@@ -77,6 +77,7 @@ export default function Dashboard() {
   return (
     <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
+        
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -149,7 +150,7 @@ export default function Dashboard() {
           <div className="lg:col-span-2">
             <RecentSurgeries surgeries={surgeries} />
           </div>
-
+          
           {/* Quick Actions */}
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-2xl shadow-lg border-0">
