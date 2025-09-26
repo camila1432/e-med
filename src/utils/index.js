@@ -1,3 +1,3 @@
 export function createPageUrl(pageName) {
-  return `/pages/${pageName.toLowerCase()}`;
+  return `/${pageName.toLowerCase()}`;
 }

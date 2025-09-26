@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Pacientes from './pages/Pacientes';
-import Cirurgia from './pages/Cirurgia';
+import Cirurgia from './pages/Cirurgias';
 import Financeiro from './pages/Financeiro';
 import Agendamento from './pages/Agendamento';
 import Relatorios from './pages/Relatorios';

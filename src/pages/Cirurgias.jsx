@@ -5,11 +5,7 @@ import FinancialRecord from "@/entities/FinancialRecord";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { 
-  Plus, 
-  Search, 
-  Activity 
-} from "lucide-react";
+import { Plus, Search, Activity } from "lucide-react";
 
 import SurgeryForm from "../components/surgeries/SurgeryForm";
 import SurgeryCard from "../components/surgeries/SurgeryCard";
@@ -17,7 +13,7 @@ import SurgeryCard from "../components/surgeries/SurgeryCard";
 export default function Cirurgias() {
   const [surgeries, setSurgeries] = useState([]);
   const [patients, setPatients] = useState([]);
-  const [financialRecords, setFinancialRecords] = useState([]);  
+  const [financialRecords, setFinancialRecords] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingSurgery, setEditingSurgery] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,19 +25,17 @@ export default function Cirurgias() {
 
   const loadData = async () => {
     try {
-
       const [surgeriesData, patientsData, financialData] = await Promise.all([
         Surgery.list("-created_date"),
         Patient.list(),
-        FinancialRecord.list() 
+        FinancialRecord.list()
       ]);
 
-      setSurgeries(surgeriesData);
-      setPatients(patientsData);
+      setSurgeries(Array.isArray(surgeriesData) ? surgeriesData : []);
+      setPatients(Array.isArray(patientsData) ? patientsData : []);
 
- 
       if (!Array.isArray(financialData)) {
-        console.warn("financialData não é array, convertendo...", financialData);
+        console.warn("financialData não é um array. Convertendo…", financialData);
         if (financialData && typeof financialData === "object") {
           setFinancialRecords(Object.values(financialData));
         } else {
@@ -192,7 +186,7 @@ export default function Cirurgias() {
           )}
         </div>
 
-        {/* Você pode usar financialRecords para mostrar dados financeiros aqui */}
+        {/* 💰 Você pode utilizar financialRecords aqui futuramente */}
 
       </div>
     </div>
