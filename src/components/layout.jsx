@@ -9,7 +9,6 @@ import {
   Home, 
   Stethoscope, 
   Users,
-  Settings,
   BarChart3
 } from "lucide-react";
 import {
@@ -27,35 +26,36 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
+// 🔧 Navegação principal com URLs já corrigidas
 const navigationItems = [
   {
     title: "Dashboard",
-    url: createPageUrl("Dashboard"),
+    url: createPageUrl("dashboard"),
     icon: Home,
   },
   {
     title: "Cirurgias",
-    url: createPageUrl("Cirurgias"),
+    url: createPageUrl("cirurgias"),
     icon: Activity,
   },
   {
     title: "Pacientes",
-    url: createPageUrl("Pacientes"),
+    url: createPageUrl("pacientes"),
     icon: Users,
   },
   {
     title: "Agendamento",
-    url: createPageUrl("Agendamento"),
+    url: createPageUrl("agendamento"),
     icon: Calendar,
   },
   {
     title: "Financeiro",
-    url: createPageUrl("Financeiro"),
+    url: createPageUrl("financeiro"),
     icon: DollarSign,
   },
   {
     title: "Relatórios",
-    url: createPageUrl("Relatorios"),
+    url: createPageUrl("relatorios"),
     icon: BarChart3,
   },
 ];
@@ -146,7 +146,7 @@ export default function Layout({ children, currentPageName }) {
           <header className="bg-white border-b border-slate-200 px-6 py-4 md:hidden shadow-sm">
             <div className="flex items-center gap-4">
               <SidebarTrigger className="hover:bg-slate-100 p-2 rounded-lg transition-colors duration-200" />
-              <h1 className="text-xl font-bold text-slate-900">MedSurgery</h1>
+              <h1 className="text-xl font-bold text-slate-900">E-MED</h1>
             </div>
           </header>
 

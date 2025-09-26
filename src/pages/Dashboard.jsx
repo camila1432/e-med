@@ -4,19 +4,19 @@ import financialJson from "@/entities/Financial_Record";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { 
-  Activity, 
-  Calendar, 
-  DollarSign, 
-  Clock, 
+import {
+  Activity,
+  Calendar,
+  DollarSign,
+  Clock,
   Users,
   FileText,
   Plus,
   TrendingUp
 } from "lucide-react";
 
-import StatsCard from "../components/dashboard/StatsCard";
-import RecentSurgeries from "../components/dashboard/RecentSurgeries";
+import StatsCard from "@/components/dashboard/StatsCard";
+import RecentSurgeries from "@/components/dashboard/RecentSurgeries";
 
 const Surgery = {
   list: async (sortKey = '', limit = 50) => {
@@ -71,11 +71,11 @@ export default function Dashboard() {
     const todayStr = today.toISOString().split('T')[0];
 
     const totalSurgeries = surgeries.length;
-    const todaySurgeries = surgeries.filter(s => 
+    const todaySurgeries = surgeries.filter(s =>
       s.scheduled_date === todayStr
     ).length;
 
-    const pendingSurgeries = surgeries.filter(s => 
+    const pendingSurgeries = surgeries.filter(s =>
       ['solicitada', 'autorizada', 'agendada'].includes(s.status)
     ).length;
 
@@ -102,7 +102,7 @@ export default function Dashboard() {
     <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
 
-
+        {/* Título e botões */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
@@ -111,13 +111,13 @@ export default function Dashboard() {
             <p className="text-slate-600 text-lg">Visão geral das suas atividades médicas</p>
           </div>
           <div className="flex gap-3">
-            <Link to={createPageUrl("Pacientes")}>
+            <Link to={createPageUrl("pacientes")}>
               <Button variant="outline" className="border-slate-300 hover:bg-slate-50">
                 <Users className="w-4 h-4 mr-2" />
                 Pacientes
               </Button>
             </Link>
-            <Link to={createPageUrl("Cirurgias")}>
+            <Link to={createPageUrl("cirurgias")}>
               <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg">
                 <Plus className="w-4 h-4 mr-2" />
                 Nova Cirurgia
@@ -126,7 +126,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-
+        {/* Cards de estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           <StatsCard
             title="Total de Cirurgias"
@@ -169,36 +169,35 @@ export default function Dashboard() {
           />
         </div>
 
-       
+        {/* Lista e ações rápidas */}
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <RecentSurgeries surgeries={surgeries} />
           </div>
 
-          
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-2xl shadow-lg border-0">
               <h3 className="text-xl font-bold text-slate-900 mb-4">Ações Rápidas</h3>
               <div className="space-y-3">
-                <Link to={createPageUrl("Cirurgias")} className="block">
+                <Link to={createPageUrl("cirurgias")} className="block">
                   <Button variant="outline" className="w-full justify-start border-blue-200 hover:bg-blue-50 hover:border-blue-300">
                     <Plus className="w-4 h-4 mr-3" />
                     Cadastrar Cirurgia
                   </Button>
                 </Link>
-                <Link to={createPageUrl("Agendamento")} className="block">
+                <Link to={createPageUrl("agendamento")} className="block">
                   <Button variant="outline" className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300">
                     <Calendar className="w-4 h-4 mr-3" />
                     Agendar Procedimento
                   </Button>
                 </Link>
-                <Link to={createPageUrl("Financeiro")} className="block">
+                <Link to={createPageUrl("financeiro")} className="block">
                   <Button variant="outline" className="w-full justify-start border-purple-200 hover:bg-purple-50 hover:border-purple-300">
                     <DollarSign className="w-4 h-4 mr-3" />
                     Registrar Pagamento
                   </Button>
                 </Link>
-                <Link to={createPageUrl("Relatorios")} className="block">
+                <Link to={createPageUrl("relatorios")} className="block">
                   <Button variant="outline" className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300">
                     <FileText className="w-4 h-4 mr-3" />
                     Gerar Relatório
