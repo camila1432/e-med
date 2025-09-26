@@ -2,19 +2,12 @@ import React, { useState, useEffect } from "react";
 import Surgery from "@/entities/Surgery";
 import Patient from "@/entities/Patient";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { 
   Plus, 
   Search, 
-  Filter, 
-  Calendar,
-  MapPin,
-  User,
-  Activity,
-  Clock,
-  DollarSign
+  Activity 
 } from "lucide-react";
 
 import SurgeryForm from "../components/surgeries/SurgeryForm";
@@ -33,23 +26,31 @@ export default function Cirurgias() {
   }, []);
 
   const loadData = async () => {
-    const [surgeriesData, patientsData] = await Promise.all([
-      Surgery.list('-created_date'),
-      Patient.list()
-    ]);
-    setSurgeries(surgeriesData);
-    setPatients(patientsData);
+    try {
+      const [surgeriesData, patientsData] = await Promise.all([
+        Surgery.list("-created_date"),
+        Patient.list()
+      ]);
+      setSurgeries(surgeriesData);
+      setPatients(patientsData);
+    } catch (error) {
+      console.error("Erro ao carregar dados:", error);
+    }
   };
 
   const handleSubmit = async (surgeryData) => {
-    if (editingSurgery) {
-      await Surgery.update(editingSurgery.id, surgeryData);
-    } else {
-      await Surgery.create(surgeryData);
+    try {
+      if (editingSurgery) {
+        await Surgery.update(editingSurgery.id, surgeryData);
+      } else {
+        await Surgery.create(surgeryData);
+      }
+      setShowForm(false);
+      setEditingSurgery(null);
+      loadData();
+    } catch (error) {
+      console.error("Erro ao salvar cirurgia:", error);
     }
-    setShowForm(false);
-    setEditingSurgery(null);
-    loadData();
   };
 
   const handleEdit = (surgery) => {
@@ -57,27 +58,30 @@ export default function Cirurgias() {
     setShowForm(true);
   };
 
-  const filteredSurgeries = surgeries.filter(surgery => {
-    const matchesSearch = surgery.patient_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         surgery.procedure_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         surgery.hospital?.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = statusFilter === "todas" || surgery.status === statusFilter;
-    
+  const filteredSurgeries = surgeries.filter((surgery) => {
+    const search = searchTerm.toLowerCase();
+    const matchesSearch =
+      surgery.patient_name?.toLowerCase().includes(search) ||
+      surgery.procedure_name?.toLowerCase().includes(search) ||
+      surgery.hospital?.toLowerCase().includes(search);
+
+    const matchesStatus =
+      statusFilter === "todas" || surgery.status === statusFilter;
+
     return matchesSearch && matchesStatus;
   });
 
   return (
     <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
-        
-        {/* Header */}
+
+        {/* Título e botão */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-slate-900 mb-2">Gestão de Cirurgias</h1>
             <p className="text-slate-600">Controle completo dos seus procedimentos cirúrgicos</p>
           </div>
-          <Button 
+          <Button
             onClick={() => {
               setEditingSurgery(null);
               setShowForm(true);
@@ -89,7 +93,7 @@ export default function Cirurgias() {
           </Button>
         </div>
 
-        {/* Search and Filters */}
+        {/* Filtros e busca */}
         <Card className="shadow-lg border-0">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
@@ -118,7 +122,7 @@ export default function Cirurgias() {
           </CardContent>
         </Card>
 
-        {/* Surgery Form Modal */}
+        {/* Modal do formulário */}
         {showForm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -135,29 +139,30 @@ export default function Cirurgias() {
           </div>
         )}
 
-        {/* Surgeries Grid */}
+        {/* Lista de cirurgias */}
         <div className="grid gap-6">
           {filteredSurgeries.map((surgery) => (
             <SurgeryCard
-              key={surgery.id}
+              key={surgery.id || surgery.surgery_id}
               surgery={surgery}
               onEdit={handleEdit}
             />
           ))}
-          
+
           {filteredSurgeries.length === 0 && (
             <Card className="shadow-lg border-0">
               <CardContent className="p-12 text-center">
                 <Activity className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Nenhuma cirurgia encontrada</h3>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                  Nenhuma cirurgia encontrada
+                </h3>
                 <p className="text-slate-600 mb-6">
-                  {searchTerm || statusFilter !== "todas" 
-                    ? "Tente ajustar os filtros de busca" 
-                    : "Cadastre sua primeira cirurgia para começar"
-                  }
+                  {searchTerm || statusFilter !== "todas"
+                    ? "Tente ajustar os filtros de busca"
+                    : "Cadastre sua primeira cirurgia para começar"}
                 </p>
                 {!searchTerm && statusFilter === "todas" && (
-                  <Button 
+                  <Button
                     onClick={() => setShowForm(true)}
                     className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
                   >
@@ -173,4 +178,3 @@ export default function Cirurgias() {
     </div>
   );
 }
-

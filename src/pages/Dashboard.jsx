@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import surgeryJson from "@/entities/Surgery";
-import financialJson from "@/entities/Financial_Record";
+import FinancialRecord from "@/entities/FinancialRecord"; 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -19,27 +19,15 @@ import StatsCard from "@/components/dashboard/StatsCard";
 import RecentSurgeries from "@/components/dashboard/RecentSurgeries";
 
 const Surgery = {
-  list: async (sortKey = '', limit = 50) => {
+  list: async (sortKey = "", limit = 50) => {
     const sorted = [...surgeryJson].sort((a, b) => {
-      if (sortKey === '-created_date') {
+      if (sortKey === "-created_date") {
         return new Date(b.created_date) - new Date(a.created_date);
       }
       return 0;
     });
     return sorted.slice(0, limit);
-  }
-};
-
-const Financial_Record = {
-  list: async (sortKey = '', limit = 50) => {
-    const sorted = [...financialJson].sort((a, b) => {
-      if (sortKey === '-created_date') {
-        return new Date(b.created_date) - new Date(a.created_date);
-      }
-      return 0;
-    });
-    return sorted.slice(0, limit);
-  }
+  },
 };
 
 export default function Dashboard() {
@@ -55,8 +43,8 @@ export default function Dashboard() {
     setIsLoading(true);
     try {
       const [surgeriesData, financialData] = await Promise.all([
-        Surgery.list('-created_date', 50),
-        Financial_Record.list('-created_date', 50)
+        Surgery.list("-created_date", 50),
+        FinancialRecord.list("-surgery_date", 50),
       ]);
       setSurgeries(surgeriesData);
       setFinancialRecords(financialData);
@@ -68,23 +56,23 @@ export default function Dashboard() {
 
   const getStats = () => {
     const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
+    const todayStr = today.toISOString().split("T")[0];
 
     const totalSurgeries = surgeries.length;
-    const todaySurgeries = surgeries.filter(s =>
-      s.scheduled_date === todayStr
+    const todaySurgeries = surgeries.filter(
+      (s) => s.scheduled_date === todayStr
     ).length;
 
-    const pendingSurgeries = surgeries.filter(s =>
-      ['solicitada', 'autorizada', 'agendada'].includes(s.status)
+    const pendingSurgeries = surgeries.filter((s) =>
+      ["solicitada", "autorizada", "agendada"].includes(s.status)
     ).length;
 
     const totalRevenue = financialRecords
-      .filter(r => r.payment_status === 'pago_total')
+      .filter((r) => r.payment_status === "pago_total")
       .reduce((sum, r) => sum + (r.received_amount || 0), 0);
 
     const pendingPayments = financialRecords
-      .filter(r => r.payment_status === 'pendente')
+      .filter((r) => r.payment_status === "pendente")
       .reduce((sum, r) => sum + (r.invoice_amount || 0), 0);
 
     return {
@@ -92,7 +80,7 @@ export default function Dashboard() {
       todaySurgeries,
       pendingSurgeries,
       totalRevenue,
-      pendingPayments
+      pendingPayments,
     };
   };
 
@@ -101,18 +89,22 @@ export default function Dashboard() {
   return (
     <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
-
-        {/* Título e botões */}
+        {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
               Dashboard Cirúrgico
             </h1>
-            <p className="text-slate-600 text-lg">Visão geral das suas atividades médicas</p>
+            <p className="text-slate-600 text-lg">
+              Visão geral das suas atividades médicas
+            </p>
           </div>
           <div className="flex gap-3">
             <Link to={createPageUrl("pacientes")}>
-              <Button variant="outline" className="border-slate-300 hover:bg-slate-50">
+              <Button
+                variant="outline"
+                className="border-slate-300 hover:bg-slate-50"
+              >
                 <Users className="w-4 h-4 mr-2" />
                 Pacientes
               </Button>
@@ -126,7 +118,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Cards de estatísticas */}
+        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           <StatsCard
             title="Total de Cirurgias"
@@ -153,7 +145,7 @@ export default function Dashboard() {
           />
           <StatsCard
             title="Receita Total"
-            value={`R$ ${stats.totalRevenue.toLocaleString('pt-BR')}`}
+            value={`R$ ${stats.totalRevenue.toLocaleString("pt-BR")}`}
             icon={DollarSign}
             bgGradient="bg-gradient-to-br from-emerald-600 to-emerald-700"
             iconColor="bg-gradient-to-br from-emerald-600 to-emerald-700"
@@ -162,14 +154,14 @@ export default function Dashboard() {
           />
           <StatsCard
             title="A Receber"
-            value={`R$ ${stats.pendingPayments.toLocaleString('pt-BR')}`}
+            value={`R$ ${stats.pendingPayments.toLocaleString("pt-BR")}`}
             icon={TrendingUp}
             bgGradient="bg-gradient-to-br from-purple-600 to-purple-700"
             iconColor="bg-gradient-to-br from-purple-600 to-purple-700"
           />
         </div>
 
-        {/* Lista e ações rápidas */}
+        {/* Conteúdo principal */}
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <RecentSurgeries surgeries={surgeries} />
@@ -177,28 +169,42 @@ export default function Dashboard() {
 
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-2xl shadow-lg border-0">
-              <h3 className="text-xl font-bold text-slate-900 mb-4">Ações Rápidas</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                Ações Rápidas
+              </h3>
               <div className="space-y-3">
                 <Link to={createPageUrl("cirurgias")} className="block">
-                  <Button variant="outline" className="w-full justify-start border-blue-200 hover:bg-blue-50 hover:border-blue-300">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start border-blue-200 hover:bg-blue-50 hover:border-blue-300"
+                  >
                     <Plus className="w-4 h-4 mr-3" />
                     Cadastrar Cirurgia
                   </Button>
                 </Link>
                 <Link to={createPageUrl("agendamento")} className="block">
-                  <Button variant="outline" className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300"
+                  >
                     <Calendar className="w-4 h-4 mr-3" />
                     Agendar Procedimento
                   </Button>
                 </Link>
                 <Link to={createPageUrl("financeiro")} className="block">
-                  <Button variant="outline" className="w-full justify-start border-purple-200 hover:bg-purple-50 hover:border-purple-300">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start border-purple-200 hover:bg-purple-50 hover:border-purple-300"
+                  >
                     <DollarSign className="w-4 h-4 mr-3" />
                     Registrar Pagamento
                   </Button>
                 </Link>
                 <Link to={createPageUrl("relatorios")} className="block">
-                  <Button variant="outline" className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300"
+                  >
                     <FileText className="w-4 h-4 mr-3" />
                     Gerar Relatório
                   </Button>
@@ -207,7 +213,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
