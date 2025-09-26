@@ -26,7 +26,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-// 🔧 Navegação principal com URLs já corrigidas
 const navigationItems = [
   {
     title: "Dashboard",
@@ -73,7 +72,7 @@ export default function Layout({ children, currentPageName }) {
                 <Stethoscope className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-xl text-slate-900">MedSurgery</h2>
+                <h2 className="font-bold text-xl text-slate-900">E-MED</h2>
                 <p className="text-xs text-slate-600 font-medium">Gestão Cirúrgica</p>
               </div>
             </div>
