@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Surgery from "@/entities/Surgery";
 import Patient from "@/entities/Patient";
+import FinancialRecord from "@/entities/FinancialRecord";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,7 @@ import SurgeryCard from "../components/surgeries/SurgeryCard";
 export default function Cirurgias() {
   const [surgeries, setSurgeries] = useState([]);
   const [patients, setPatients] = useState([]);
+  const [financialRecords, setFinancialRecords] = useState([]);  
   const [showForm, setShowForm] = useState(false);
   const [editingSurgery, setEditingSurgery] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,12 +29,27 @@ export default function Cirurgias() {
 
   const loadData = async () => {
     try {
-      const [surgeriesData, patientsData] = await Promise.all([
+
+      const [surgeriesData, patientsData, financialData] = await Promise.all([
         Surgery.list("-created_date"),
-        Patient.list()
+        Patient.list(),
+        FinancialRecord.list() 
       ]);
+
       setSurgeries(surgeriesData);
       setPatients(patientsData);
+
+ 
+      if (!Array.isArray(financialData)) {
+        console.warn("financialData não é array, convertendo...", financialData);
+        if (financialData && typeof financialData === "object") {
+          setFinancialRecords(Object.values(financialData));
+        } else {
+          setFinancialRecords([]);
+        }
+      } else {
+        setFinancialRecords(financialData);
+      }
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     }
@@ -174,6 +191,9 @@ export default function Cirurgias() {
             </Card>
           )}
         </div>
+
+        {/* Você pode usar financialRecords para mostrar dados financeiros aqui */}
+
       </div>
     </div>
   );
