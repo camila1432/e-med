@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Surgery } from '@/entities/Surgery';
+import Surgery from '@/entities/Surgery'; 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar } from '@/components/ui/calendar';
+import Calendar from "@/components/ui/calendar";
 import { Badge } from '@/components/ui/badge';
-import { Clock, MapPin, User, Activity, AlertCircle } from 'lucide-react';
+import { Clock, MapPin, User, Activity } from 'lucide-react';
 import ptBR from 'date-fns/locale/pt-BR';
 
 const statusColors = {
@@ -36,16 +36,14 @@ export default function Agendamento() {
   }, [date, allSurgeries]);
 
   const loadSurgeries = async () => {
-    const data = await Surgery.list();
+    const data = await Surgery.list(); 
     setAllSurgeries(data);
-    // Trigger initial filter
     setDate(new Date());
   };
 
   return (
     <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
         <div>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Agendamento Cirúrgico</h1>
           <p className="text-slate-600">Visualize e organize suas cirurgias por data.</p>

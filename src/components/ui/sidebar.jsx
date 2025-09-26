@@ -1,43 +1,61 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { createContext, useContext, useState } from "react";
 
-export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+export function Sidebar({ children, className }) {
+  return <aside className={className}>{children}</aside>;
+}
 
+export function SidebarHeader({ children, className }) {
+  return <div className={className}>{children}</div>;
+}
+
+export function SidebarContent({ children, className }) {
+  return <div className={className}>{children}</div>;
+}
+
+export function SidebarGroup({ children, className }) {
+  return <div className={className}>{children}</div>;
+}
+
+export function SidebarGroupLabel({ children, className }) {
+  return <div className={className}>{children}</div>;
+}
+
+export function SidebarGroupContent({ children, className }) {
+  return <div className={className}>{children}</div>;
+}
+
+export function SidebarMenu({ children, className }) {
+  return <ul className={className}>{children}</ul>;
+}
+
+export function SidebarMenuItem({ children }) {
+  return <li>{children}</li>;
+}
+
+export function SidebarMenuButton({ children, asChild = false, className }) {
+  return asChild ? children : <button className={className}>{children}</button>;
+}
+
+export function SidebarFooter({ children, className }) {
+  return <div className={className}>{children}</div>;
+}
+
+const SidebarContext = createContext();
+
+export function SidebarProvider({ children }) {
+  const [open, setOpen] = useState(true);
   return (
-    <div className="flex">
-      <div
-        className={`bg-blue-700 text-white h-screen p-4 transition-width duration-300 ${
-          isOpen ? "w-64" : "w-16"
-        } flex flex-col`}
-      >
-        <button
-          className="mb-6 text-white focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle Sidebar"
-        >
-          {isOpen ? "⏪" : "⏩"}
-        </button>
+    <SidebarContext.Provider value={{ open, setOpen }}>
+      {children}
+    </SidebarContext.Provider>
+  );
+}
 
-        <nav className="flex flex-col space-y-4">
-          <Link to="/" className="hover:bg-blue-600 rounded px-2 py-1">
-            {isOpen ? "🏠 Home" : "🏠"}
-          </Link>
-          <Link to="/pacientes" className="hover:bg-blue-600 rounded px-2 py-1">
-            {isOpen ? "👥 Pacientes" : "👥"}
-          </Link>
-          <Link to="/cirurgias" className="hover:bg-blue-600 rounded px-2 py-1">
-            {isOpen ? "🔪 Cirurgias" : "🔪"}
-          </Link>
-          <Link to="/financeiro" className="hover:bg-blue-600 rounded px-2 py-1">
-            {isOpen ? "💰 Financeiro" : "💰"}
-          </Link>
-        </nav>
-      </div>
-
-      <div className="flex-1 p-6">
-        <h1 className="text-2xl font-bold">Conteúdo principal</h1>
-      </div>
-    </div>
+export function SidebarTrigger({ className }) {
+  const { setOpen } = useContext(SidebarContext);
+  return (
+    <button onClick={() => setOpen((prev) => !prev)} className={className}>
+      ☰
+    </button>
   );
 }

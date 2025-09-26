@@ -1,39 +1,39 @@
-{
-  "name": "Surgery",
-  "type": "object",
-  "properties": {
-    "patient_id": {
-      "type": "string",
-      "description": "ID do paciente"
+const Surgery = {
+  name: "Surgery",
+  type: "object",
+  properties: {
+    patient_id: {
+      type: "string",
+      description: "ID do paciente"
     },
-    "patient_name": {
-      "type": "string",
-      "description": "Nome do paciente"
+    patient_name: {
+      type: "string",
+      description: "Nome do paciente"
     },
-    "procedure_name": {
-      "type": "string",
-      "description": "Nome do procedimento cirúrgico"
+    procedure_name: {
+      type: "string",
+      description: "Nome do procedimento cirúrgico"
     },
-    "procedure_code": {
-      "type": "string",
-      "description": "Código do procedimento (TUSS/AMB)"
+    procedure_code: {
+      type: "string",
+      description: "Código do procedimento (TUSS/AMB)"
     },
-    "hospital": {
-      "type": "string",
-      "description": "Hospital onde será realizada"
+    hospital: {
+      type: "string",
+      description: "Hospital onde será realizada"
     },
-    "scheduled_date": {
-      "type": "string",
-      "format": "date",
-      "description": "Data agendada"
+    scheduled_date: {
+      type: "string",
+      format: "date",
+      description: "Data agendada"
     },
-    "scheduled_time": {
-      "type": "string",
-      "description": "Horário agendado"
+    scheduled_time: {
+      type: "string",
+      description: "Horário agendado"
     },
-    "status": {
-      "type": "string",
-      "enum": [
+    status: {
+      type: "string",
+      enum: [
         "solicitada",
         "autorizada",
         "agendada",
@@ -41,89 +41,91 @@
         "faturada",
         "cancelada"
       ],
-      "default": "solicitada",
-      "description": "Status da cirurgia"
+      default: "solicitada",
+      description: "Status da cirurgia"
     },
-    "priority": {
-      "type": "string",
-      "enum": [
+    priority: {
+      type: "string",
+      enum: [
         "eletiva",
         "urgente",
         "emergencial"
       ],
-      "default": "eletiva",
-      "description": "Prioridade do procedimento"
+      default: "eletiva",
+      description: "Prioridade do procedimento"
     },
-    "main_surgeon": {
-      "type": "string",
-      "description": "Cirurgião principal"
+    main_surgeon: {
+      type: "string",
+      description: "Cirurgião principal"
     },
-    "assistant_surgeons": {
-      "type": "array",
-      "items": {
-        "type": "string"
+    assistant_surgeons: {
+      type: "array",
+      items: {
+        type: "string"
       },
-      "description": "Cirurgiões auxiliares"
+      description: "Cirurgiões auxiliares"
     },
-    "anesthesiologist": {
-      "type": "string",
-      "description": "Anestesista responsável"
+    anesthesiologist: {
+      type: "string",
+      description: "Anestesista responsável"
     },
-    "estimated_duration": {
-      "type": "number",
-      "description": "Duração estimada em horas"
+    estimated_duration: {
+      type: "number",
+      description: "Duração estimada em horas"
     },
-    "medical_fee": {
-      "type": "number",
-      "description": "Honorário médico"
+    medical_fee: {
+      type: "number",
+      description: "Honorário médico"
     },
-    "assistant_fee": {
-      "type": "number",
-      "description": "Taxa dos auxiliares"
+    assistant_fee: {
+      type: "number",
+      description: "Taxa dos auxiliares"
     },
-    "total_cost": {
-      "type": "number",
-      "description": "Custo total estimado"
+    total_cost: {
+      type: "number",
+      description: "Custo total estimado"
     },
-    "authorization_number": {
-      "type": "string",
-      "description": "Número da autorização do convênio"
+    authorization_number: {
+      type: "string",
+      description: "Número da autorização do convênio"
     },
-    "clinical_history": {
-      "type": "string",
-      "description": "História clínica relevante"
+    clinical_history: {
+      type: "string",
+      description: "História clínica relevante"
     },
-    "surgical_report": {
-      "type": "string",
-      "description": "Relatório cirúrgico"
+    surgical_report: {
+      type: "string",
+      description: "Relatório cirúrgico"
     },
-    "postop_instructions": {
-      "type": "string",
-      "description": "Orientações pós-operatórias"
+    postop_instructions: {
+      type: "string",
+      description: "Orientações pós-operatórias"
     },
-    "documents": {
-      "type": "array",
-      "items": {
-        "type": "string"
+    documents: {
+      type: "array",
+      items: {
+        type: "string"
       },
-      "description": "URLs dos documentos anexados"
+      description: "URLs dos documentos anexados"
     },
-    "complications": {
-      "type": "string",
-      "description": "Complicações observadas"
+    complications: {
+      type: "string",
+      description: "Complicações observadas"
     },
-    "actual_start_time": {
-      "type": "string",
-      "description": "Hora real de início"
+    actual_start_time: {
+      type: "string",
+      description: "Hora real de início"
     },
-    "actual_end_time": {
-      "type": "string",
-      "description": "Hora real de término"
+    actual_end_time: {
+      type: "string",
+      description: "Hora real de término"
     }
   },
-  "required": [
+  required: [
     "patient_name",
     "procedure_name",
     "hospital"
   ]
-}
+};
+
+export default Surgery;
