@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Financial_Record } from '@/entities/Financial_Record';
-import { AuxiliaryPayment } from '@/entities/AuxiliaryPayment';
+import AuxiliaryPayment from "@/entities/AuxiliaryPayment";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

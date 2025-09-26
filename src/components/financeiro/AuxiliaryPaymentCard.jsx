@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AuxiliaryPayment } from '@/entities/AuxiliaryPayment';
+import AuxiliaryPayment from "@/entities/AuxiliaryPayment";
 import { Check, X, Edit, DollarSign, Calendar, User, ShieldCheck, Banknote } from "lucide-react";
 
 const statusColors = {

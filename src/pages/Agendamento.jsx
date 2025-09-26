@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import { Badge } from '@/components/ui/badge';
 import { Clock, MapPin, User, Activity, AlertCircle } from 'lucide-react';
-import { ptBR } from 'date-fns/locale';
+import ptBR from 'date-fns/locale/pt-BR';
 
 const statusColors = {
   solicitada: "bg-yellow-100 text-yellow-800 border-yellow-200",

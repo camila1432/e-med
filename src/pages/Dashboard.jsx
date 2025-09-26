@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Surgery } from "@/entities/Surgery";
-import { Financial_Record } from "@/entities/Financial_Record";
+import surgeryJson from "@/entities/Surgery";
+import financialJson from "@/entities/Financial_Record";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -17,6 +17,30 @@ import {
 
 import StatsCard from "../components/dashboard/StatsCard";
 import RecentSurgeries from "../components/dashboard/RecentSurgeries";
+
+const Surgery = {
+  list: async (sortKey = '', limit = 50) => {
+    const sorted = [...surgeryJson].sort((a, b) => {
+      if (sortKey === '-created_date') {
+        return new Date(b.created_date) - new Date(a.created_date);
+      }
+      return 0;
+    });
+    return sorted.slice(0, limit);
+  }
+};
+
+const Financial_Record = {
+  list: async (sortKey = '', limit = 50) => {
+    const sorted = [...financialJson].sort((a, b) => {
+      if (sortKey === '-created_date') {
+        return new Date(b.created_date) - new Date(a.created_date);
+      }
+      return 0;
+    });
+    return sorted.slice(0, limit);
+  }
+};
 
 export default function Dashboard() {
   const [surgeries, setSurgeries] = useState([]);
@@ -44,21 +68,21 @@ export default function Dashboard() {
 
   const getStats = () => {
     const today = new Date();
-    const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    
+    const todayStr = today.toISOString().split('T')[0];
+
     const totalSurgeries = surgeries.length;
     const todaySurgeries = surgeries.filter(s => 
-      s.scheduled_date === today.toISOString().split('T')[0]
+      s.scheduled_date === todayStr
     ).length;
-    
+
     const pendingSurgeries = surgeries.filter(s => 
       ['solicitada', 'autorizada', 'agendada'].includes(s.status)
     ).length;
-    
+
     const totalRevenue = financialRecords
       .filter(r => r.payment_status === 'pago_total')
       .reduce((sum, r) => sum + (r.received_amount || 0), 0);
-    
+
     const pendingPayments = financialRecords
       .filter(r => r.payment_status === 'pendente')
       .reduce((sum, r) => sum + (r.invoice_amount || 0), 0);
@@ -77,8 +101,8 @@ export default function Dashboard() {
   return (
     <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
-        
-        {/* Header */}
+
+
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
@@ -102,7 +126,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Stats Grid */}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           <StatsCard
             title="Total de Cirurgias"
@@ -145,13 +169,13 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Main Content Grid */}
+       
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <RecentSurgeries surgeries={surgeries} />
           </div>
+
           
-          {/* Quick Actions */}
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-2xl shadow-lg border-0">
               <h3 className="text-xl font-bold text-slate-900 mb-4">Ações Rápidas</h3>
@@ -184,6 +208,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
