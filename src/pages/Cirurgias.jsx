@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Surgery from "@/entities/Surgery";
+import Surgery from "@/entities/Surgery.js";
 import Patient from "@/entities/Patient";
 import FinancialRecord from "@/entities/FinancialRecord";
 import { Button } from "@/components/ui/button";

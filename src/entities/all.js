@@ -1,7 +1,4 @@
-export { default as AuxiliaryPayment } from "./AuxiliaryPayment";
-export { default as AuxiliaryPaymentEntity } from "./AuxiliaryPaymentEntity";
-export { default as FinancialRecord } from "./FinancialRecord";
-export { default as Patient } from "./Patient";
-export { default as PatientSchema } from "./PatientSchema";
-export { default as Surgery } from "./Surgery";
-export { default as SurgerySchema } from "./SurgerySchema";
+export { default as Surgery } from "@/entities/Surgery";
+export { default as Financial_Record } from "@/entities/Financial_Record";
+export { default as Patient } from "@/entities/Patient";
+export { default as AuxiliaryPayment } from "@/entities/AuxiliaryPayment";
