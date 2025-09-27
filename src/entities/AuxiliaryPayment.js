@@ -1,0 +1,44 @@
+const AuxiliaryPayment = {
+  name: "AuxiliaryPayment",
+  type: "object",
+  properties: {
+    surgery_id: { type: "string", description: "ID da cirurgia vinculada" },
+    financial_record_id: { type: "string", description: "ID do registro financeiro principal" },
+    auxiliary_name: { type: "string", description: "Nome do profissional auxiliar" },
+    auxiliary_function: { type: "string", description: "Função (ex: 1º Auxiliar, Anestesista)" },
+    auxiliary_cpf_cnpj: { type: "string", description: "CPF ou CNPJ do profissional" },
+    payment_amount: { type: "number", description: "Valor a ser pago" },
+    due_date: { type: "string", format: "date", description: "Data de vencimento do pagamento" },
+    payment_status: {
+      type: "string",
+      enum: ["pendente", "aprovado", "pago", "rejeitado"],
+      default: "pendente",
+      description: "Status do pagamento"
+    },
+    payment_type: {
+      type: "string",
+      enum: ["honorario", "reembolso", "adiantamento"],
+      default: "honorario"
+    },
+    payment_date: { type: "string", format: "date", description: "Data em que o pagamento foi efetuado" },
+    bank_details: { type: "string", description: "Dados bancários para o pagamento (Banco, Agência, Conta, PIX)" },
+    documents: {
+      type: "array",
+      items: { type: "string" },
+      description: "URLs de documentos como recibos ou notas"
+    },
+    tax_withholdings: {
+      type: "object",
+      properties: {
+        inss: { type: "number" },
+        irrf: { type: "number" },
+        iss: { type: "number" }
+      },
+      description: "Valores de retenção de impostos"
+    },
+    notes: { type: "string", description: "Observações e comentários do fluxo de pagamento" }
+  },
+  required: ["surgery_id", "auxiliary_name", "payment_amount"]
+};
+
+export default AuxiliaryPayment;

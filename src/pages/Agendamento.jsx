@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Surgery from '@/entities/Surgery'; 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useEffect } from "react";
+import Surgery from "@/entities/Surgery";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Calendar from "@/components/ui/calendar";
-import { Badge } from '@/components/ui/badge';
-import { Clock, MapPin, User, Activity } from 'lucide-react';
-import ptBR from 'date-fns/locale/pt-BR';
+import { Badge } from "@/components/ui/badge";
+import { Clock, MapPin, User, Activity } from "lucide-react";
+import ptBR from "date-fns/locale/pt-BR";
 
 const statusColors = {
   solicitada: "bg-yellow-100 text-yellow-800 border-yellow-200",
@@ -17,29 +17,38 @@ const statusColors = {
 
 export default function Agendamento() {
   const [date, setDate] = useState(new Date());
-  const [surgeries, setSurgeries] = useState([]);
   const [allSurgeries, setAllSurgeries] = useState([]);
+  const [surgeries, setSurgeries] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    async function loadSurgeries() {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await Surgery.list();
+        setAllSurgeries(data);
+      } catch (e) {
+        setError("Erro ao carregar cirurgias.");
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    }
     loadSurgeries();
   }, []);
 
   useEffect(() => {
-    if (date) {
-      const filtered = allSurgeries.filter(s => {
-        if (!s.scheduled_date) return false;
-        const surgeryDate = new Date(s.scheduled_date);
-        return surgeryDate.toDateString() === date.toDateString();
-      });
-      setSurgeries(filtered);
-    }
-  }, [date, allSurgeries]);
+    if (!date) return;
 
-  const loadSurgeries = async () => {
-    const data = await Surgery.list(); 
-    setAllSurgeries(data);
-    setDate(new Date());
-  };
+    const filtered = allSurgeries.filter((s) => {
+      if (!s.scheduled_date) return false;
+      const surgeryDate = new Date(s.scheduled_date);
+      return surgeryDate.toDateString() === date.toDateString();
+    });
+    setSurgeries(filtered);
+  }, [date, allSurgeries]);
 
   return (
     <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
@@ -59,7 +68,7 @@ export default function Agendamento() {
                   onSelect={setDate}
                   className="p-4"
                   locale={ptBR}
-                  disabled={(d) => d < new Date('1990-01-01')}
+                  disabled={(d) => d < new Date("1990-01-01")}
                   initialFocus
                 />
               </CardContent>
@@ -69,13 +78,15 @@ export default function Agendamento() {
           <div className="lg:col-span-2">
             <Card className="shadow-lg border-0">
               <CardHeader>
-                <CardTitle>
-                  Cirurgias para {date ? date.toLocaleDateString('pt-BR') : '...'}
-                </CardTitle>
+                <CardTitle>Cirurgias para {date ? date.toLocaleDateString("pt-BR") : "..."}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {surgeries.length > 0 ? (
-                  surgeries.map(surgery => (
+                {loading ? (
+                  <p>Carregando cirurgias...</p>
+                ) : error ? (
+                  <p className="text-red-600">{error}</p>
+                ) : surgeries.length > 0 ? (
+                  surgeries.map((surgery) => (
                     <div key={surgery.id} className="p-4 rounded-xl border border-slate-200 bg-white">
                       <div className="flex items-start justify-between mb-3">
                         <div>
@@ -87,7 +98,7 @@ export default function Agendamento() {
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div className="flex items-center gap-2 text-slate-700">
                           <Clock className="w-4 h-4 text-blue-500" />
-                          <span>{surgery.scheduled_time || 'A definir'}</span>
+                          <span>{surgery.scheduled_time || "A definir"}</span>
                         </div>
                         <div className="flex items-center gap-2 text-slate-700">
                           <MapPin className="w-4 h-4 text-purple-500" />

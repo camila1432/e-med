@@ -186,8 +186,6 @@ export default function Cirurgias() {
           )}
         </div>
 
-        {/* 💰 Você pode utilizar financialRecords aqui futuramente */}
-
       </div>
     </div>
   );

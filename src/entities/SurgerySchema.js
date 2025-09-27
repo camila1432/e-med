@@ -1,4 +1,4 @@
-const Surgery = {
+const SurgerySchema = {
   name: "Surgery",
   type: "object",
   properties: {
@@ -128,4 +128,4 @@ const Surgery = {
   ]
 };
 
-export default Surgery;
+export default SurgerySchema;
